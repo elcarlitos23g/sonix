@@ -250,81 +250,41 @@
             }
         }
 
-        async function buscarMusicaOficial() {
-            cambiarPestana('inicio');
-            const query = document.getElementById('global-search').value;
-            if (!query) return;
+     async function buscarMusicaOficial() {
+    cambiarPestana('inicio');
+    const query = document.getElementById('global-search').value;
+    const API_KEY = 'AIzaSyDh-AiCH44Ohu_Oys82magGY7YkiqKLejU';
+    
+    if (!query) return;
 
-            const tbody = document.getElementById('playlist-rows');
-            tbody.innerHTML = `<tr><td colspan="2" style="text-align: center; padding: 20px;">Buscando pistas oficiales en el servidor...</td></tr>`;
+    const tbody = document.getElementById('playlist-rows');
+    tbody.innerHTML = `<tr><td colspan="2" style="text-align: center; padding: 20px;">Conectando a YouTube...</td></tr>`;
 
-            try {
-               const response = await fetch(`https://corsproxy.io/?${encodeURIComponent('https://www.youtube.com/results?search_query=' + query + ' audio oficial')}`);
-                const html = await response.text();
-                
-               const regex = /"videoRenderer":\s*\{\s*"videoId"\s*:\s*"([^"]+)"[\s\S]*?"title"\s*:\s*\{\s*"runs"\s*:\s*\[\s*\{\s*"text"\s*:\s*"([^"]+)"/g;
-                let match;
-                listaCanciones = [];
-                let contador = 0;
+    try {
+        const response = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&q=${encodeURIComponent(query + ' audio oficial')}&key=${API_KEY}`);
+        const data = await response.json();
+        
+        listaCanciones = data.items.map(item => ({
+            id: item.id.videoId,
+            title: item.snippet.title
+        }));
 
-                while ((match = regex.exec(html)) !== null && contador < 12) {
-                    listaCanciones.push({ id: match[1], title: match[2] });
-                    contador++;
-                }
-
-                tbody.innerHTML = '';
-                if (listaCanciones.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="2" style="text-align: center;">No se encontraron resultados oficiales.</td></tr>`;
-                    return;
-                }
-
-                listaCanciones.forEach((cancion, index) => {
-                    const row = document.createElement('tr');
-                    row.className = 'track-row';
-                    row.id = `track-${index}`;
-                    row.onclick = () => reproducirAudioInvisible(index);
-                    row.innerHTML = `
-                        <td style="text-align: center; color: var(--text-muted);">${index + 1}</td>
-                        <td style="font-weight: 500;">${cancion.title}</td>
-                    `;
-                    tbody.appendChild(row);
-                });
-
-            } catch (error) {
-                console.error(error);
-                tbody.innerHTML = `<tr><td colspan="2" style="text-align: center; color: red;">Error temporal de red. Intentando conectar...</td></tr>`;
-            }
-        }
-
-        function reproducirAudioInvisible(index) {
-            if (currentIndex !== -1) {
-                const filaAnterior = document.getElementById(`track-${currentIndex}`);
-                if (filaAnterior) filaAnterior.classList.remove('playing');
-            }
-
-            currentIndex = index;
-            const cancion = listaCanciones[index];
-            
-            const filaActual = document.getElementById(`track-${index}`);
-            if (filaActual) filaActual.classList.add('playing');
-
-            document.getElementById('player-title').innerText = cancion.title;
-            
-            player.loadVideoById(cancion.id);
-            document.getElementById('play-btn').innerText = "⏸";
-        }
-
-        function togglePlay() {
-            if (currentIndex === -1) return;
-            const state = player.getPlayerState();
-            if (state === YT.PlayerState.PLAYING) {
-                player.pauseVideo();
-                document.getElementById('play-btn').innerText = "▶";
-            } else {
-                player.playVideo();
-                document.getElementById('play-btn').innerText = "⏸";
-            }
-        }
+        tbody.innerHTML = '';
+        listaCanciones.forEach((cancion, index) => {
+            const row = document.createElement('tr');
+            row.className = 'track-row';
+            row.id = `track-${index}`;
+            row.onclick = () => reproducirAudioInvisible(index);
+            row.innerHTML = `
+                <td style="text-align: center; color: var(--text-muted);">${index + 1}</td>
+                <td style="font-weight: 500;">${cancion.title}</td>
+            `;
+            tbody.appendChild(row);
+        });
+    } catch (error) {
+        tbody.innerHTML = `<tr><td colspan="2" style="text-align: center; color: red;">Error en la API. Revisa tu clave.</td></tr>`;
+    }
+}
 
         function onPlayerStateChange(event) {
             if (event.data === YT.PlayerState.ENDED) {
