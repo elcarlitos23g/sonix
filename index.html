@@ -293,7 +293,34 @@
                     reproducirAudioInvisible(nextIndex);
                 }
             }
+        }function reproducirAudioInvisible(index) {
+    currentIndex = index;
+    const cancion = listaCanciones[index];
+    player.loadVideoById(cancion.id);
+    player.playVideo();
+}
+
+function togglePlay() {
+    const state = player.getPlayerState();
+    if (state === YT.PlayerState.PLAYING) {
+        player.pauseVideo();
+        document.getElementById('play-btn').innerHTML = '▶';
+    } else {
+        player.playVideo();
+        document.getElementById('play-btn').innerHTML = '⏸';
+    }
+}
+
+var player;
+function onYouTubeIframeAPIReady() {
+    player = new YT.Player('yt-player-invisible', {
+        height: '0',
+        width: '0',
+        events: {
+            'onStateChange': onPlayerStateChange
         }
+    });
+}
     </script>
 </body>
 </html>
