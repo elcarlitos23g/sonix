@@ -262,7 +262,7 @@
                const response = await fetch(`https://corsproxy.io/?${encodeURIComponent('https://www.youtube.com/results?search_query=' + query + ' audio oficial')}`);
                 const html = await response.text();
                 
-                const regex = /"videoRenderer":{"videoId":"([^"]+)","title":{"runs":\[{"text":"([^"]+)"/g;
+               const regex = /"videoRenderer":\s*\{\s*"videoId"\s*:\s*"([^"]+)"[\s\S]*?"title"\s*:\s*\{\s*"runs"\s*:\s*\[\s*\{\s*"text"\s*:\s*"([^"]+)"/g;
                 let match;
                 listaCanciones = [];
                 let contador = 0;
