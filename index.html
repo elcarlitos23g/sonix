@@ -158,6 +158,18 @@
             opacity: 0.01;
             overflow: hidden;
         }
+        /* Adaptación para móviles */
+@media (max-width: 768px) {
+    .app-container {
+        flex-direction: column !important;
+    }
+    .sidebar, .main-content {
+        width: 100% !important;
+    }
+    table {
+        width: 100% !important;
+    }
+}
     </style>
 </head>
 <body>
