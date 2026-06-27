@@ -336,6 +336,20 @@ function onYouTubeIframeAPIReady() {
         }
     });
 }
+       function actualizarNombreCancion(titulo) {
+        document.getElementById('titulo-cancion-actual').innerText = titulo;
+    }
+
+    function onPlayerStateChange(event) {
+        if (event.data === 1) { 
+            var videoData = event.target.getVideoData();
+            actualizarNombreCancion(videoData.title);
+        }
+    }
+    }
+}
     </script>
-</body>
+    <span id="titulo-cancion-actual">Ninguna canción</span>
+</body><
+}
 </html>
