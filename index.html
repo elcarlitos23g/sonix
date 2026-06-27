@@ -332,21 +332,16 @@ function onYouTubeIframeAPIReady() {
         height: '0',
         width: '0',
         events: {
-            'onStateChange': onPlayerStateChange
+            'onStateChange': function(event) {
+                if (event.data === 1) {
+                    var titulo = event.target.getVideoData().title;
+                    var letrero = document.getElementById('titulo-cancion-actual');
+                    if(letrero) letrero.innerText = titulo;
+                }
+            }
         }
     });
 }
-       function actualizarNombreCancion(titulo) {
-        document.getElementById('titulo-cancion-actual').innerText = titulo;
-    }
-
-    function onPlayerStateChange(event) {
-        if (event.data === 1) { 
-            var videoData = event.target.getVideoData();
-            actualizarNombreCancion(videoData.title);
-        }
-    }
-    }
 }
     </script>
     <span id="titulo-cancion-actual">Ninguna canción</span>
