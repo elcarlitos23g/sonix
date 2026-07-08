@@ -325,7 +325,6 @@
     player.loadVideoById(cancion.id);
     player.playVideo();
 }
-
 function onYouTubeIframeAPIReady() {
     player = new YT.Player('yt-player-invisible', {
         height: '0',
@@ -335,7 +334,7 @@ function onYouTubeIframeAPIReady() {
                 if (event.data === 1) {
                     var titulo = event.target.getVideoData().title;
                     var letrero = document.getElementById('titulo-cancion-actual');
-                    if (letrero) letrero.innerText = titulo;
+                    if(letrero) letrero.innerText = titulo;
                 }
             }
         }
