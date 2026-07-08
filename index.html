@@ -335,14 +335,11 @@ function onYouTubeIframeAPIReady() {
                 if (event.data === 1) {
                     var titulo = event.target.getVideoData().title;
                     var letrero = document.getElementById('titulo-cancion-actual');
-                    if(letrero) letrero.innerText = titulo;
+                    if (letrero) letrero.innerText = titulo;
                 }
             }
         }
     });
-}
-}
-}
     </script>
     <span id="titulo-cancion-actual">Ninguna canción</span>
 </body><
