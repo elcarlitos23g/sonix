@@ -324,9 +324,48 @@
         });
     }
 
-    function buscarMusicaOficial() {
-        console.log("Buscando música...");
+   function buscarMusicaOficial() {
+    var input = document.getElementById('global-search');
+    if (!input) return;
+    
+    var textoBusqueda = input.value.toLowerCase();
+
+    var resultados = listaCanciones.filter(function(cancion) {
+        return cancion.titulo.toLowerCase().includes(textoBusqueda);
+    });
+
+    var tbody = document.getElementById('playlist-rows');
+    if (!tbody) return;
+
+    tbody.innerHTML = "";
+
+    if (resultados.length === 0) {
+        tbody.innerHTML = "<tr><td colspan='2' style='text-align: center;'>No se encontraron canciones</td></tr>";
+        return;
     }
+
+    resultados.forEach(function(cancion, index) {
+        var tr = document.createElement('tr');
+        tr.style.cursor = "pointer";
+
+        var tdNumero = document.createElement('td');
+        tdNumero.style.textAlign = "center";
+        tdNumero.innerText = index + 1;
+
+        var tdTitulo = document.createElement('td');
+        tdTitulo.innerText = cancion.titulo;
+
+        tr.appendChild(tdNumero);
+        tr.appendChild(tdTitulo);
+
+        tr.onclick = function() {
+            var indexReal = listaCanciones.indexOf(cancion);
+            reproducirAudioInvisible(indexReal);
+        };
+
+        tbody.appendChild(tr);
+    });
+}
 
     function cambiarPestana(pestana) {
         console.log("Cambiando a:", pestana);
