@@ -180,10 +180,15 @@
 
     <div class="app-container">
         <div class="sidebar">
-            <div class="logo">🎵 Sonix</div>
-            <div class="menu-item active" id="menu-inicio" onclick="cambiarPestana('inicio')">🏠 Inicio</div>
-            <div class="menu-item" id="menu-colaborar" onclick="cambiarPestana('colaborar')">🤝 Colaborar</div>
-            
+    <div class="logo">🎵 Sonix</div>
+    <div class="menu-item active" id="menu-inicio" onclick="cambiarPestana('inicio')">🏠 Inicio</div>
+    <div class="menu-item" id="menu-colaborar" onclick="cambiarPestana('colaborar')">🤝 Colaborar</div>
+
+    <div class="search-box">
+        <input type="text" id="global-search" placeholder="Oliver Tree, Karol G, Bad Bunny...">
+        <button onclick="buscarMusicaOficial()">Buscar</button>
+    </div>
+</div>
             <div style="color: var(--text-muted); font-size: 11px; font-weight: bold; margin-top: 15px;">BUSCAR MÚSICA GLOBAL</div>
             <div class="search-box">
                 <input type="text" id="global-search" placeholder="Oliver Tree, Karol G, Bad Bunny...">
